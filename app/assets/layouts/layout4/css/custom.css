@@ -1,0 +1,23 @@
+/* here you can put your own css to customize and override the theme */
+.loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 10104;
+    opacity: 0;
+    background: rgb(255, 255, 255);
+    -webkit-transition: all 1.5s;
+    -moz-transition: all 1.5s;
+    transition: all 1.5s;
+}
+
+.loader-show {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+}

@@ -157,20 +157,19 @@ module.exports = function (grunt) {
 		
 		// Empties folders to start fresh
 		clean: {
-// 			dist  : {
-// 				files: [
-// 					{
-// 						dot: true,
-// 						src: [
-// 							'.tmp',
-// 							'<%= yeoman.dist %>/{,*/}*',
-// 							'!<%= yeoman.dist %>/.git{,*/}*'
-// 						]
-// 					}
-// 				]
-// 			},
-// 			server: '.tmp'
-			sass: 'dist'
+			dist  : {
+				files: [
+					{
+						dot: true,
+						src: [
+							'.tmp',
+							'<%= yeoman.dist %>/{,*/}*',
+							'!<%= yeoman.dist %>/.git{,*/}*'
+						]
+					}
+				]
+			},
+			server: '.tmp'
 		},
 		
 		// Add vendor prefixed styles
@@ -384,7 +383,7 @@ module.exports = function (grunt) {
 		ngtemplates: {
 			dist: {
 				options: {
-					module : 'ocoAppApp',
+					module : 'ocoApp',
 					htmlmin: '<%= htmlmin.dist.options %>',
 					usemin : 'scripts/scripts.js'
 				},
