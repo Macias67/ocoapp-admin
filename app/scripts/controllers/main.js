@@ -10,11 +10,11 @@
 angular.module('MetronicApp')
 	.controller('MainCtrl', [
 		'$rootScope', '$scope', '$timeout', function ($rootScope, $scope, $timeout) {
-		
+			
 			$timeout(function () {
-				$rootScope.$settings.layout.pageOnLoad        = false;
+				$rootScope.$settings.layout.pageOnLoad = false;
 			}, 1000);
-		
+			
 			$scope.$on('$viewContentLoaded', function () {
 				// initialize core components
 				App.initAjax();

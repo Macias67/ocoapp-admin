@@ -8,7 +8,7 @@ var MetronicApp = angular.module("MetronicApp", [
 	"ui.bootstrap",
 	"oc.lazyLoad",
 	"ngSanitize",
-	"jsonFormatter"
+	"firebase"
 ]);
 
 /* Configure ocLazyLoader(refer: https://github.com/ocombe/ocLazyLoad) */
@@ -48,8 +48,8 @@ MetronicApp.factory('settings', [
 			assetsPath      : 'assets',
 			globalPath      : 'assets/global',
 			layoutGlobalPath: 'assets/layouts/global',
-			layoutPath      : 'assets/layouts/layout4'
-			
+			layoutPath      : 'assets/layouts/layout4',
+			pageOnLoad      : false
 		};
 		
 		$rootScope.$settings = settings;
@@ -58,9 +58,24 @@ MetronicApp.factory('settings', [
 	}
 ]);
 
+
 /* Setup App Main Controller */
 MetronicApp.controller('AppController', [
-	'$scope', '$rootScope', function ($scope, $rootScope) {
+	'$scope', '$rootScope', '$state', 'AUTH_EVENTS', 'Auth', function ($scope, $rootScope, $state, AUTH_EVENTS, Auth) {
+		
+		$rootScope.$on(AUTH_EVENTS.loginSuccess, function (event, data) {
+			$state.go('/');
+		});
+		
+		$rootScope.$on(AUTH_EVENTS.loginFailed, function (event, data) {
+			console.log(data);
+		});
+		
+		$rootScope.$on(AUTH_EVENTS.logoutSuccess, function (event, data) {
+			$state.go('login');
+		});
+		
+		
 		$scope.$on('$viewContentLoaded', function () {
 			App.initComponents(); // init core components
 			//Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
@@ -76,7 +91,13 @@ MetronicApp.controller('AppController', [
 
 /* Setup Layout Part - Header */
 MetronicApp.controller('HeaderController', [
-	'$scope', function ($scope) {
+	'$scope', '$rootScope', 'Auth', function ($scope, $rootScope, Auth) {
+		
+		var vm    = this;
+		vm.logout = function () {
+			Auth.$signOut();
+		};
+		
 		$scope.$on('$includeContentLoaded', function () {
 			Layout.initHeader(); // init header
 			QuickNav.init();
@@ -134,8 +155,12 @@ MetronicApp.controller('FooterController', [
 /* Setup Rounting For All Pages */
 MetronicApp.config([
 	'$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+		
 		// Redirect any unmatched url
-		$urlRouterProvider.otherwise("/blank");
+		$urlRouterProvider.otherwise(function ($injector) {
+			var $state = $injector.get('$state');
+			$state.go('/');
+		});
 		
 		$stateProvider
 			.state('login', {
@@ -183,8 +208,8 @@ MetronicApp.config([
 				abstract   : true
 			})
 			// Blank Page
-			.state('blank', {
-				url        : "/blank",
+			.state('/', {
+				url        : "/",
 				parent     : 'tmpl',
 				templateUrl: "views/blank.html",
 				data       : {
@@ -205,26 +230,62 @@ MetronicApp.config([
 					]
 				}
 			})
-		
-		
+			.state('perfil', {
+				url        : "/perfil",
+				parent     : 'tmpl',
+				templateUrl: "views/perfil.html",
+				data       : {
+					pageTitle: 'Blank Page Template'
+				},
+				controller : "PerfilCtrl",
+				resolve    : {
+					deps: [
+						'$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load({
+								name        : 'MetronicApp',
+								insertBefore: '#ng_load_plugins_before',
+								files       : [
+									'scripts/controllers/perfil.js'
+								]
+							});
+						}
+					]
+				}
+			})
 	}
 ]);
 
 /* Init global settings and run the app */
 MetronicApp.run([
-	"$rootScope", "settings", "$state", function ($rootScope, settings, $state) {
+	"$rootScope", "settings", "$state", "Auth", "$timeout", function ($rootScope, settings, $state, Auth, $timeout) {
 		$rootScope.$state    = $state; // state to be accessed from view
 		$rootScope.$settings = settings; // state to be accessed from view
-		$rootScope.$usuario  = firebase.auth().currentUser;
+		
+		Auth.$onAuthStateChanged(function (authData) {
+			if (authData) {
+				console.log(authData);
+				//$rootScope.$usuario = authData;
+			}
+			else {
+				$state.go('login');
+			}
+		});
 		
 		$rootScope.$on('$stateChangeStart', function (event, toState) {
-			var requiredLogin = toState.data.requiredLogin;
-			// if yes and if this user is not logged in, redirect him to login page
-			if (requiredLogin && !$rootScope.$usuario) {
-				$state.go('login');
-			} else {
-				console.log($rootScope)
-			}
+			$timeout(function () {
+				$rootScope.$usuario = Auth.$getAuth();
+				var requiredLogin   = toState.data.requiredLogin;
+				
+				console.log($rootScope.$usuario);
+				
+				// if yes and if this user is not logged in, redirect him to login page
+				if (requiredLogin && ($rootScope.$usuario === null)) {
+					event.preventDefault();
+					$state.go('login');
+					
+					console.log('lo mando a login');
+				}
+			});
 		});
 	}
 ]);
