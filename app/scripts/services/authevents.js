@@ -7,7 +7,7 @@
  * # authevents
  * Constant in the MetronicApp.
  */
-angular.module('MetronicApp')
+angular.module('ocoApp')
 	.constant('AUTH_EVENTS', {
 		loginSuccess    : 'auth-login-success',
 		loginFailed     : 'auth-login-failed',

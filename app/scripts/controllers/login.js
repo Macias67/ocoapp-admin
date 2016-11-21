@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name MetronicApp.controller:LoginCtrl
+ * @name ocoApp.controller:LoginCtrl
  * @description
  * # LoginCtrl
  * Controller of the ocoApp
  */
-angular.module('MetronicApp')
+angular.module('ocoApp')
 	.controller('LoginCtrl', [
 		'$scope', '$rootScope', '$timeout', 'AuthService', 'AUTH_EVENTS', function ($scope, $rootScope, $timeout, AuthService, AUTH_EVENTS) {
 			
@@ -21,6 +21,14 @@ angular.module('MetronicApp')
 			vm.submit = function () {
 				AuthService.login(vm.credenciales).then(function (user) {
 					$rootScope.$emit(AUTH_EVENTS.loginSuccess, user);
+				}).catch(function (error) {
+					$rootScope.$emit(AUTH_EVENTS.loginFailed, error);
+				});
+			};
+			
+			vm.loginFacebook = function () {
+				AuthService.loginFacebook().then(function (response) {
+					$rootScope.$emit(AUTH_EVENTS.loginSuccess, response.user);
 				}).catch(function (error) {
 					$rootScope.$emit(AUTH_EVENTS.loginFailed, error);
 				});

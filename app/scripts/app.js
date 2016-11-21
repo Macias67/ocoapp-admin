@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc overview
- * @name ocoAppApp
+ * @name ocoApp
  * @description
- * # ocoAppApp
+ * # ocoApp
  *
  * Main module of the application.
  */
 angular
-	.module('ocoAppApp', [
+	.module('ocoApp', [
 		'ngAnimate'
 	]);

@@ -3,7 +3,7 @@
  ***/
 
 /* Metronic App */
-var MetronicApp = angular.module("MetronicApp", [
+var MetronicApp = angular.module('ocoApp', [
 	"ui.router",
 	"ui.bootstrap",
 	"oc.lazyLoad",
@@ -40,12 +40,14 @@ MetronicApp.factory('settings', [
 
 /* Setup App Main Controller */
 MetronicApp.controller('AppController', [
-	'$scope', '$rootScope', '$state', 'Notification', 'AUTH_EVENTS', function ($scope, $rootScope, $state, Notification, AUTH_EVENTS) {
+	'$scope', '$rootScope', '$state', 'Notification', 'AUTH_EVENTS', '$timeout', function ($scope, $rootScope, $state, Notification, AUTH_EVENTS, $timeout) {
 		
 		$rootScope.$on(AUTH_EVENTS.loginSuccess, function (e, data) {
-			e.preventDefault();
-			$state.go('inicio');
-			Notification.success(null, 'Bienvenido');
+			$timeout(function () {
+				e.preventDefault();
+				$state.go('inicio');
+				Notification.success(null, 'Bienvenido ' + $rootScope.$usuario.displayName);
+			}, 1000);
 		});
 		
 		$rootScope.$on(AUTH_EVENTS.loginFailed, function (e, data) {
@@ -155,10 +157,17 @@ MetronicApp.controller('FooterController', [
 
 /* Init global settings and run the app */
 MetronicApp.run([
-	"$rootScope", "settings", "$state", function ($rootScope, settings, $state) {
+	"$rootScope", "settings", "$state", "AuthService", "User", function ($rootScope, settings, $state, AuthService, User) {
 		$rootScope.$state    = $state; // state to be accessed from view
 		$rootScope.$settings = settings; // state to be accessed from view
-				
+		
+		AuthService.firebaseAuth().$onAuthStateChanged(function (user) {
+			if (user) {
+				User.setUser(user);
+				$rootScope.$usuario = User.getUser();
+			}
+		});
+		
 		// Cuando el usuario no esta autentificado
 		$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
 			if (error === "AUTH_REQUIRED") {

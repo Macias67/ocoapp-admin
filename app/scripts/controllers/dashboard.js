@@ -7,14 +7,12 @@
  * # MainCtrl
  * Controller of the MetronicApp
  */
-angular.module('MetronicApp')
+angular.module('ocoApp')
 	.controller('DashboardCtrl', [
 		'$rootScope', '$scope', '$timeout', 'currentUser', 'AuthService', function ($rootScope, $scope, $timeout, currentUser, AuthService) {
 			
-			console.log(currentUser);
-			console.log(AuthService.getToken());
-			
-			
+			console.log($rootScope.$usuario);
+						
 			$timeout(function () {
 				$rootScope.$settings.layout.pageOnLoad = false;
 			}, 100);

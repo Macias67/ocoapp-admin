@@ -7,7 +7,7 @@
  * # Auth
  * Factory in the ocoApp.
  */
-angular.module('MetronicApp').factory('AuthService', [
+angular.module('ocoApp').factory('AuthService', [
 	'$auth', '$firebaseAuth', function ($auth, $firebaseAuth) {
 		
 		var authService = {};
@@ -19,8 +19,16 @@ angular.module('MetronicApp').factory('AuthService', [
 				user.getToken().then(function (token) {
 					$auth.setToken(token);
 				});
-				
 				return user;
+			});
+		};
+		
+		authService.loginFacebook = function () {
+			return firebaseAuth.$signInWithPopup('facebook').then(function (response) {
+				response.user.getToken().then(function (token) {
+					$auth.setToken(token);
+				});
+				return response;
 			});
 		};
 		
@@ -67,6 +75,10 @@ angular.module('MetronicApp').factory('AuthService', [
 			return $auth.getToken();
 		};
 		
+		authService.firebaseAuth = function () {
+			return firebaseAuth;
+		};
+				
 		// Public API here
 		return authService;
 	}

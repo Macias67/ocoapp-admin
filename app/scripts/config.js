@@ -52,8 +52,7 @@ MetronicApp.config([
 						}
 					],
 					currentUser: [
-						"AuthService", function (AuthService) {
-							// $waitForSignIn returns a promise so the resolve waits for it to complete
+						'AuthService', function (AuthService) {
 							return AuthService.requireSignIn();
 						}
 					]

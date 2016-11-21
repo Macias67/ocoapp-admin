@@ -7,7 +7,7 @@
  * # PerfilCtrl
  * Controller of the MetronicApp
  */
-angular.module('MetronicApp')
+angular.module('ocoApp')
 	.controller('PerfilCtrl', [
 		'$rootScope', '$scope', '$timeout',function ($rootScope, $scope, $timeout) {
 			$timeout(function () {
