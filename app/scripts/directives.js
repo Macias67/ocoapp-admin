@@ -14,7 +14,6 @@ MetronicApp.directive('ngSpinnerBar', [
 				// display the spinner bar whenever the route changes(the content part started loading)
 				$rootScope.$on('$stateChangeStart', function () {
 					//element.removeClass('hide'); // show spinner bar
-					console.log('inicia state');
 					$rootScope.$settings.layout.pageOnLoad = true;
 				});
 				
@@ -23,8 +22,6 @@ MetronicApp.directive('ngSpinnerBar', [
 					//element.addClass('hide'); // hide spinner bar
 					//$('body').removeClass('page-on-load'); // remove page loading indicator
 					Layout.setAngularJsSidebarMenuActiveLink('match', null, event.currentScope.$state); // activate selected link in the sidebar menu
-					
-					console.log('termina state');
 					
 					// auto scorll to page top
 					$timeout(function () {

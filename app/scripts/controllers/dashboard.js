@@ -8,12 +8,16 @@
  * Controller of the MetronicApp
  */
 angular.module('MetronicApp')
-	.controller('MainCtrl', [
-		'$rootScope', '$scope', '$timeout', function ($rootScope, $scope, $timeout) {
+	.controller('DashboardCtrl', [
+		'$rootScope', '$scope', '$timeout', 'currentUser', 'AuthService', function ($rootScope, $scope, $timeout, currentUser, AuthService) {
+			
+			console.log(currentUser);
+			console.log(AuthService.getToken());
+			
 			
 			$timeout(function () {
 				$rootScope.$settings.layout.pageOnLoad = false;
-			}, 1000);
+			}, 100);
 			
 			$scope.$on('$viewContentLoaded', function () {
 				// initialize core components

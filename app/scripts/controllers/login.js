@@ -9,7 +9,7 @@
  */
 angular.module('MetronicApp')
 	.controller('LoginCtrl', [
-		'$scope', '$rootScope', '$timeout', 'Auth', 'AUTH_EVENTS', function ($scope, $rootScope, $timeout, Auth, AUTH_EVENTS) {
+		'$scope', '$rootScope', '$timeout', 'AuthService', 'AUTH_EVENTS', function ($scope, $rootScope, $timeout, AuthService, AUTH_EVENTS) {
 			
 			var vm          = this;
 			vm.loginForm    = {};
@@ -19,9 +19,8 @@ angular.module('MetronicApp')
 			};
 			
 			vm.submit = function () {
-				Auth.$signInWithEmailAndPassword(vm.credenciales.email, vm.credenciales.pass).then(function (user) {
-					$rootScope.$usuario = user;
-					$rootScope.$emit(AUTH_EVENTS.loginSuccess);
+				AuthService.login(vm.credenciales).then(function (user) {
+					$rootScope.$emit(AUTH_EVENTS.loginSuccess, user);
 				}).catch(function (error) {
 					$rootScope.$emit(AUTH_EVENTS.loginFailed, error);
 				});
@@ -33,7 +32,6 @@ angular.module('MetronicApp')
 				
 				$timeout(function () {
 					$rootScope.$settings.layout.pageOnLoad = false;
-					console.log('pageOnLoad false desde loginctrl');
 				}, 500);
 			});
 		}
