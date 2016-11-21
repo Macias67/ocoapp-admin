@@ -27,7 +27,7 @@ angular.module('ocoApp')
 				this._user.email         = user.email;
 				this._user.emailVerified = user.emailVerified;
 				this._user.isAnonymous   = user.isAnonymous;
-				this._user.photoURL      = (user.photoURL === undefined) ? 'assets/layouts/layout4/img/avatar.png' : user.photoURL;
+				this._user.photoURL      = (user.photoURL === null) ? 'assets/layouts/layout4/img/avatar.png' : user.photoURL;
 				this._user.providerData  = user.providerData;
 				this._user.providerId    = user.providerId;
 				this._user.refreshToken  = user.refreshToken;
