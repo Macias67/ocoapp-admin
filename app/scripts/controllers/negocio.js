@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc function
- * @name MetronicApp.controller:PerfilCtrl
+ * @name ocoApp.controller:NegocioCtrl
  * @description
- * # PerfilCtrl
- * Controller of the MetronicApp
+ * # NegocioCtrl
+ * Controller of the ocoApp
  */
 angular.module('ocoApp')
-	.controller('PerfilCtrl', [
-		'$rootScope', '$scope', '$timeout',function ($rootScope, $scope, $timeout) {
+	.controller('NegocioCtrl', [
+		'$rootScope', '$scope', '$timeout', function ($rootScope, $scope, $timeout) {
 			$timeout(function () {
 				$rootScope.$settings.layout.pageOnLoad = false;
 			}, 300);

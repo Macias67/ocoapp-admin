@@ -9,13 +9,10 @@
  */
 angular.module('ocoApp')
 	.controller('DashboardCtrl', [
-		'$rootScope', '$scope', '$timeout', 'currentUser', 'AuthService', function ($rootScope, $scope, $timeout, currentUser, AuthService) {
-			
-			console.log($rootScope.$usuario);
-						
+		'$rootScope', '$scope', '$timeout', function ($rootScope, $scope, $timeout) {
 			$timeout(function () {
 				$rootScope.$settings.layout.pageOnLoad = false;
-			}, 100);
+			}, 300);
 			
 			$scope.$on('$viewContentLoaded', function () {
 				// initialize core components

@@ -157,26 +157,22 @@ var Login = function () {
 			focusInvalid: false, // do not focus the last invalid input
 			ignore      : "",
 			rules       : {
-				
-				fullname: {
+				nombre   : {
 					required: true
 				},
-				email   : {
+				apellido : {
+					required: true
+				},
+				direccion: {
+					required: true
+				},
+				ciudad   : {
+					required: true
+				},
+				
+				email    : {
 					required: true,
 					email   : true
-				},
-				address : {
-					required: true
-				},
-				city    : {
-					required: true
-				},
-				country : {
-					required: true
-				},
-				
-				username : {
-					required: true
 				},
 				password : {
 					required: true
@@ -223,14 +219,14 @@ var Login = function () {
 			},
 			
 			submitHandler: function (form) {
-				form[0].submit();
+				//form[0].submit();
 			}
 		});
 		
 		$('.register-form input').keypress(function (e) {
 			if (e.which == 13) {
 				if ($('.register-form').validate().form()) {
-					$('.register-form').submit();
+					//$('.register-form').submit();
 				}
 				return false;
 			}

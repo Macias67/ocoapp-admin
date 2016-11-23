@@ -152,7 +152,7 @@ var App = function() {
                     success: function(res) {
                         App.unblockUI(el);
                         el.html(res);
-                        App.initAjax() // reinitialize elements & plugins for newly loaded content
+	                    App.initAjax();;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; // reinitialize elements & plugins for newly loaded content
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         App.unblockUI(el);
@@ -258,7 +258,48 @@ var App = function() {
             } else {
                 el.removeClass('edited');
             }
-        } 
+        };
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
+	    ;
 
         $('body').on('keydown', '.form-md-floating-label .form-control', function(e) { 
             handleInput($(this));
@@ -272,7 +313,7 @@ var App = function() {
                 $(this).addClass('edited');
             }
         });
-    }
+    };;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     // Handles custom checkboxes & radios using jQuery iCheck plugin
     var handleiCheck = function() {
@@ -313,7 +354,7 @@ var App = function() {
             return;
         }
         $('[data-toggle=confirmation]').confirmation({ btnOkClass: 'btn btn-sm btn-success', btnCancelClass: 'btn btn-sm btn-danger'});
-    }
+    };;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
     // Handles Bootstrap Accordions.
     var handleAccordions = function() {
@@ -436,7 +477,7 @@ var App = function() {
         if (typeof(autosize) == "function") {
             autosize(document.querySelectorAll('textarea.autosizeme'));
         }
-    }
+    };;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     // Handles Bootstrap Popovers
 
@@ -567,8 +608,8 @@ var App = function() {
             if(parent.attr('data-related')) {
                 $(parent.attr('data-related')).css('height', parent.height());
             }
-       });       
-    }
+       });
+   };;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
     //* END:CORE HANDLERS *//
 
@@ -779,8 +820,8 @@ var App = function() {
                     },
                     overlayCSS: {
                         backgroundColor: options.overlayColor ? options.overlayColor : '#555',
-                        opacity: options.boxed ? 0.05 : 0.1,
-                        cursor: 'wait'
+	                    opacity    : options.boxed ? 0.5 : 0.8,
+                        cursor         : 'wait'
                     }
                 });
             } else { // page blocking
@@ -794,8 +835,8 @@ var App = function() {
                     },
                     overlayCSS: {
                         backgroundColor: options.overlayColor ? options.overlayColor : '#555',
-                        opacity: options.boxed ? 0.05 : 0.1,
-                        cursor: 'wait'
+	                    opacity    : options.boxed ? 0.5 : 0.8,
+                        cursor         : 'wait'
                     }
                 });
             }

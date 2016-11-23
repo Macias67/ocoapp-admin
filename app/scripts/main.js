@@ -50,11 +50,11 @@ MetronicApp.controller('AppController', [
 			}, 1000);
 		});
 		
-		$rootScope.$on(AUTH_EVENTS.loginFailed, function (e, data) {
+		$rootScope.$on(AUTH_EVENTS.loginFailed, function (e, error) {
 			e.preventDefault();
-			console.log(data);
+			console.log(error);
 			var msj = '';
-			switch (data) {
+			switch (error.code) {
 				case 'auth/account-exists-with-different-credential':
 					break;
 				case 'auth/invalid-credential':
@@ -67,9 +67,11 @@ MetronicApp.controller('AppController', [
 					break;
 				case 'auth/wrong-password':
 					break;
+				case 'auth/not-admin':
+					break;
 			}
 			
-			Notification.error(null, data.message);
+			Notification.error(null, error.message);
 		});
 		
 		$rootScope.$on(AUTH_EVENTS.logoutSuccess, function (e, data) {
@@ -77,9 +79,15 @@ MetronicApp.controller('AppController', [
 			$state.go('login');
 		});
 		
+		$rootScope.$on(AUTH_EVENTS.notAuthorized, function (e, data) {
+			e.preventDefault();
+			$state.go('login');
+			Notification.error(null, 'Identifícate como administrador de un negocio.');
+		});
+		
 		$scope.$on('$viewContentLoaded', function () {
 			App.initComponents(); // init core components
-			//Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
+			//Layout.init();
 		});
 	}
 ]);
@@ -157,22 +165,22 @@ MetronicApp.controller('FooterController', [
 
 /* Init global settings and run the app */
 MetronicApp.run([
-	"$rootScope", "settings", "$state", "AuthService", "User", function ($rootScope, settings, $state, AuthService, User) {
+	"$rootScope", "settings", "$state", "AuthService", 'AUTH_EVENTS', function ($rootScope, settings, $state, AuthService, AUTH_EVENTS) {
 		$rootScope.$state    = $state; // state to be accessed from view
 		$rootScope.$settings = settings; // state to be accessed from view
 		
 		AuthService.firebaseAuth().$onAuthStateChanged(function (user) {
 			if (user) {
-				User.setUser(user);
-				$rootScope.$usuario = User.getUser();
+				AuthService.getUser().then(function (usuario) {
+					$rootScope.$usuario = usuario;
+				});
 			}
 		});
 		
 		// Cuando el usuario no esta autentificado
 		$rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
 			if (error === "AUTH_REQUIRED") {
-				event.preventDefault();
-				$state.go('login');
+				$rootScope.$emit(AUTH_EVENTS.notAuthorized);
 			}
 		});
 	}

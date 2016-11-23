@@ -44,16 +44,11 @@ MetronicApp.config([
 					bodyClass    : 'page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-sidebar-closed-hide-logo'
 				},
 				resolve    : {
-					deps       : [
+					deps: [
 						'$ocLazyLoad', function ($ocLazyLoad) {
 							return $ocLazyLoad.load([
 								'bootstrap-toastr'
 							], {insertBefore: '#ng_load_plugins_before', serie: true});
-						}
-					],
-					currentUser: [
-						'AuthService', function (AuthService) {
-							return AuthService.requireSignIn();
 						}
 					]
 				},
@@ -69,11 +64,16 @@ MetronicApp.config([
 				},
 				controller : "DashboardCtrl",
 				resolve    : {
-					deps: [
+					deps       : [
 						'$ocLazyLoad', function ($ocLazyLoad) {
 							return $ocLazyLoad.load([
 								'scripts/controllers/dashboard.js'
 							], {insertBefore: '#ng_load_plugins_before', serie: true});
+						}
+					],
+					currentUser: [
+						'AuthService', function (AuthService) {
+							return AuthService.requireSignIn();
 						}
 					]
 				}
@@ -83,15 +83,43 @@ MetronicApp.config([
 				parent     : 'tmpl',
 				templateUrl: "views/perfil.html",
 				data       : {
-					pageTitle: 'Blank Page Template'
+					pageTitle: 'Perfil'
 				},
 				controller : "PerfilCtrl",
 				resolve    : {
-					deps: [
+					deps       : [
 						'$ocLazyLoad', function ($ocLazyLoad) {
 							return $ocLazyLoad.load([
 								'scripts/controllers/perfil.js'
 							], {insertBefore: '#ng_load_plugins_before', serie: true});
+						}
+					],
+					currentUser: [
+						'AuthService', function (AuthService) {
+							return AuthService.requireSignIn();
+						}
+					]
+				}
+			})
+			.state('mi-negocio', {
+				url        : "/mi-negocio",
+				parent     : 'tmpl',
+				templateUrl: "views/negocio/perfil.html",
+				data       : {
+					pageTitle: 'Mi negocio'
+				},
+				controller : "NegocioCtrl",
+				resolve    : {
+					deps       : [
+						'$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load([
+								'scripts/controllers/negocio.js'
+							], {insertBefore: '#ng_load_plugins_before', serie: true});
+						}
+					],
+					currentUser: [
+						'AuthService', function (AuthService) {
+							return AuthService.requireSignIn();
 						}
 					]
 				}

@@ -8,18 +8,30 @@
  * Factory in the ocoApp.
  */
 angular.module('ocoApp').factory('AuthService', [
-	'$auth', '$firebaseAuth', function ($auth, $firebaseAuth) {
+	'$auth', '$firebaseAuth', '$q', 'User', function ($auth, $firebaseAuth, $q, User) {
 		
 		var authService = {};
 		
 		var firebaseAuth = $firebaseAuth(firebase.auth());
 		
 		authService.login = function (credenciales) {
+			
+			var deferred = $q.defer();
+			
 			return firebaseAuth.$signInWithEmailAndPassword(credenciales.email, credenciales.pass).then(function (user) {
-				user.getToken().then(function (token) {
-					$auth.setToken(token);
+				return firebase.database().ref('usuarios').child(user.uid).once('value').then(function (snapshot) {
+					if (snapshot.val().admin) {
+						user.getToken().then(function (token) {
+							$auth.setToken(token);
+						});
+						deferred.resolve(user);
+					}
+					else {
+						firebaseAuth.$signOut();
+						deferred.reject({code: 'auth/not-admin', message: 'El usuario no es administrador de negocios.'});
+					}
+					return deferred.promise;
 				});
-				return user;
 			});
 		};
 		
@@ -30,6 +42,35 @@ angular.module('ocoApp').factory('AuthService', [
 				});
 				return response;
 			});
+		};
+		
+		authService.createUserWithEmailAndPassword = function (signUpData) {
+			var deferred = $q.defer();
+			firebaseAuth.$createUserWithEmailAndPassword(signUpData.email, signUpData.password).then(function (user) {
+				//user.sendEmailVerification();
+				user.updateProfile({
+					displayName: signUpData.nombre + ' ' + signUpData.apellido,
+					photoURL   : 'https://firebasestorage.googleapis.com/v0/b/oco-app.appspot.com/o/avatar.png?alt=media&token=7ba4a7ad-eb42-4f8c-b825-aa7e32332247'
+				}).then(function () {
+					firebase.database().ref('usuarios').child(user.uid).set({
+						direccion : signUpData.direccion,
+						ciudad    : signUpData.ciudad,
+						admin     : true,
+						providerId: user.providerId
+					}).then(function () {
+						firebaseAuth.$signOut();
+						deferred.resolve(user);
+					}).catch(function (error) {
+						deferred.reject(error);
+					});
+				}).catch(function (error) {
+					deferred.reject(error);
+				});
+			}).catch(function (error) {
+				deferred.reject(error);
+			});
+			
+			return deferred.promise;
 		};
 		
 		authService.logout = function () {
@@ -54,10 +95,11 @@ angular.module('ocoApp').factory('AuthService', [
 		};
 		
 		authService.getUser = function () {
-			if (!$auth.isAuthenticated()) {
-				return null;
-			}
-			return firebaseAuth.$getAuth();
+			var user = firebaseAuth.$getAuth();
+			return firebase.database().ref('usuarios').child(user.uid).once('value').then(function (snapshot) {
+				User.setUser(user, snapshot.val());
+				return $q.when(User.getUser());
+			});
 		};
 		
 		authService.waitForSignIn = function () {
@@ -65,7 +107,22 @@ angular.module('ocoApp').factory('AuthService', [
 		};
 		
 		authService.requireSignIn = function () {
-			return firebaseAuth.$requireSignIn();
+			var defer = $q.defer();
+			return firebaseAuth.$requireSignIn().then(function (user) {
+				return firebase.database().ref('usuarios').child(user.uid).once('value').then(function (snapshot) {
+					if (snapshot.val().admin) {
+						User.setUser(user, snapshot.val());
+						defer.resolve(User.getUser());
+					}
+					else {
+						$auth.logout();
+						firebaseAuth.$signOut();
+						defer.reject('AUTH_REQUIRED');
+					}
+					
+					return defer.promise;
+				});
+			});
 		};
 		
 		authService.getToken = function () {
@@ -78,7 +135,7 @@ angular.module('ocoApp').factory('AuthService', [
 		authService.firebaseAuth = function () {
 			return firebaseAuth;
 		};
-				
+		
 		// Public API here
 		return authService;
 	}
