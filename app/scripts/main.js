@@ -10,7 +10,8 @@ var MetronicApp = angular.module('ocoApp', [
 	"ngSanitize",
 	"firebase",
 	"satellizer",
-	"ngAudio"
+	"ngAudio",
+	"ngMap"
 ]);
 
 /* Setup global settings */

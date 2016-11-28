@@ -1,0 +1,44 @@
+<!-- BEGIN PAGE BREADCRUMB -->
+<ul class = "page-breadcrumb breadcrumb">
+	<li>
+		<a ui-sref = "inicio">Blank Page</a>
+		<i class = "fa fa-circle"></i>
+	</li>
+</ul>
+<!-- END PAGE BREADCRUMB -->
+
+<div class = "row">
+	<div class = "col-md-6 ">
+		<!-- BEGIN SAMPLE FORM PORTLET-->
+		<div class = "portlet light bordered">
+			<div class = "portlet-title">
+				<div class = "caption font-red-sunglo">
+					<i class = "icon-settings font-red-sunglo"></i>
+					<span class = "caption-subject bold uppercase"> Default Form</span>
+				</div>
+			</div>
+			<div class = "portlet-body form">
+				<form role = "form" name = "nuevoNegocioCtrl.porletNuevoNegocio.form">
+					<div class = "form-body">
+						<div class = "form-group">
+							<label>Nombre</label>
+							<div class = "input-icon input-icon-lg">
+								<i class = "fa fa-bell-o"></i>
+								<input type = "text" class = "form-control input-lg" placeholder = "Nombre" ng-model = "nuevoNegocioCtrl.porletNuevoNegocio.data.nombre" required>
+							</div>
+						</div>
+					</div>
+					<div class = "form-actions">
+						<button type = "button" class = "btn btn-sm red"
+						        ng-disabled = "!nuevoNegocioCtrl.porletNuevoNegocio.form.$valid"
+						        ng-click = "nuevoNegocioCtrl.porletNuevoNegocio.guarda()">Guardar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+	<div class = "col-md-6">
+		<pre>{{nuevoNegocioCtrl.porletNuevoNegocio.data | json}}</pre>
+	</div>
+</div>
