@@ -124,5 +124,29 @@ MetronicApp.config([
 					]
 				}
 			})
+			.state('negocio-nuevo', {
+				url        : "/negocio/nuevo",
+				parent     : 'tmpl',
+				templateUrl: "views/negocio/nuevo.html",
+				data       : {
+					pageTitle: 'Negocio Nuevo'
+				},
+				controller : "NuevoNegocioCtrl as nuevoNegocioCtrl",
+				resolve    : {
+					deps       : [
+						'$ocLazyLoad', function ($ocLazyLoad) {
+							return $ocLazyLoad.load([
+								'scripts/services/negocio.js',
+								'scripts/controllers/negocio/nuevonegocio.js'
+							], {insertBefore: '#ng_load_plugins_before', serie: true});
+						}
+					],
+					currentUser: [
+						'AuthService', function (AuthService) {
+							return AuthService.requireSignIn();
+						}
+					]
+				}
+			})
 	}
 ]);

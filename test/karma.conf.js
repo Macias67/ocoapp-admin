@@ -29,6 +29,9 @@ module.exports = function (config) {
 			'bower_components/angularfire/dist/angularfire.js',
 			'bower_components/satellizer/dist/satellizer.js',
 			'bower_components/angular-audio/app/angular.audio.js',
+			'bower_components/ngmap/build/scripts/ng-map.js',
+			'bower_components/angular-filter/dist/angular-filter.js',
+			'bower_components/moment/moment.js',
 			'bower_components/angular-mocks/angular-mocks.js',
 			// endbower
 			'app/scripts/**/*.js',

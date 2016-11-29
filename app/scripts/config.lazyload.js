@@ -2,7 +2,7 @@
 MetronicApp.config([
 	'$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
 		$ocLazyLoadProvider.config({
-			serie:true,
+			serie  : true,
 			modules: [
 				{
 					name : 'select2',

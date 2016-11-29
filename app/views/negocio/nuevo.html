@@ -1,0 +1,137 @@
+<ul class = "page-breadcrumb breadcrumb">
+	<li>
+		<a ui-sref = "inicio">Inicio</a>
+		<i class = "fa fa-circle"></i>
+	</li>
+</ul>
+
+<div class = "row">
+	<div class = "col-md-12 ">
+		<!-- BEGIN SAMPLE FORM PORTLET-->
+		<div class = "portlet light bordered">
+			<div class = "portlet-title">
+				<div class = "caption font-red-sunglo">
+					<i class = "icon-settings font-red-sunglo"></i>
+					<span class = "caption-subject bold uppercase"> Default Form</span>
+				</div>
+			</div>
+			<div class = "portlet-body form">
+				<form role = "form" name = "nuevoNegocioCtrl.formNuevoNegocio.form" ng-submit = "nuevoNegocioCtrl.formNuevoNegocio.guarda()">
+					<div class = "form-body">
+						<div class = "col-md-6">
+							<div class = "form-group">
+							<div class = "input-icon input-icon-lg">
+								<i class = "fa fa-bell-o"></i>
+								<input type = "text" class = "form-control input-lg" placeholder = "Nombre" ng-model = "nuevoNegocioCtrl.negocio.nombre" required>
+							</div>
+						</div>
+							<hr>
+							<h4>Dirección</h4>
+							<div class = "form-group">
+								<label>Calle</label>
+								<div class = "input-icon input-icon-sm">
+									<i class = "fa fa-bell-o"></i>
+									<input type = "text" class = "form-control input-sm" placeholder = "Calle" ng-model = "nuevoNegocioCtrl.negocio.calle" required>
+								</div>
+							</div>
+							<div class = "form-group">
+								<label>Número</label>
+								<div class = "input-icon input-icon-sm">
+									<i class = "fa fa-bell-o"></i>
+									<input type = "text" class = "form-control input-sm" placeholder = "Número" ng-model = "nuevoNegocioCtrl.negocio.numero" required>
+								</div>
+							</div>
+							<div class = "form-group">
+								<label>Colonia</label>
+								<div class = "input-icon input-icon-sm">
+									<i class = "fa fa-bell-o"></i>
+									<input type = "text" class = "form-control input-sm" placeholder = "Colonia" ng-model = "nuevoNegocioCtrl.negocio.colonia" required>
+								</div>
+							</div>
+							<div class = "form-group">
+								<label>C.P.</label>
+								<div class = "input-icon input-icon-sm">
+									<i class = "fa fa-bell-o"></i>
+									<input type = "text" class = "form-control input-sm" placeholder = "C.P." ng-model = "nuevoNegocioCtrl.negocio.cp" required>
+								</div>
+							</div>
+							<div class = "form-group">
+								<label>Ciudad</label>
+								<div class = "input-icon input-icon-sm">
+									<i class = "fa fa-bell-o"></i>
+									<input type = "text" class = "form-control input-sm" placeholder = "Ciudad" ng-model = "nuevoNegocioCtrl.negocio.ciudad" required>
+								</div>
+							</div>
+							<div class = "form-group">
+								<label>Estado</label>
+								<div class = "input-icon input-icon-sm">
+									<i class = "fa fa-bell-o"></i>
+									<input type = "text" class = "form-control input-sm" placeholder = "Estado" ng-model = "nuevoNegocioCtrl.negocio.estado" required>
+								</div>
+							</div>
+							<div class = "form-group">
+								<label>Referencia</label>
+								<textarea class = "form-control" rows = "3" ng-model = "nuevoNegocioCtrl.negocio.referencia"></textarea>
+							</div>
+						</div>
+						<div class = "col-md-6">
+							<h4>Ubicación</h4>
+							<div class = "form-group form-horizontal">
+								<div class = "col-md-6">
+									<label class = "col-md-2 control-label">Lat: </label>
+									<div class = "col-md-10">
+										<div class = "input-icon input-icon-sm">
+											<i class = "fa fa-bell-o"></i>
+											<input type = "text" class = "form-control input-sm" placeholder = "Latitud" ng-model = "nuevoNegocioCtrl.negocio.latitud" readonly>
+										</div>
+									</div>
+								</div>
+								<div class = "col-md-6">
+									<label class = "col-md-2 control-label">Lon: </label>
+									<div class = "col-md-10">
+										<div class = "input-icon input-icon-sm">
+											<i class = "fa fa-bell-o"></i>
+											<input type = "text" class = "form-control input-sm" placeholder = "Longitud" ng-model = "nuevoNegocioCtrl.negocio.longitud" readonly>
+										</div>
+									</div>
+								</div>
+								<div class = "row">
+									<label class = "col-md-2 control-label">Dirección:</label>
+									<div class = "col-md-10">
+										<p class = "form-control-static bold">
+											{{nuevoNegocioCtrl.formNuevoNegocio.mapa.direccion}}
+										</p>
+									</div>
+								</div>
+								<div class = "clearfix"></div>
+							</div>
+							<div class = "form-group">
+								<ng-map
+									center = "{{nuevoNegocioCtrl.formNuevoNegocio.mapa.centroMapa}}"
+									zoom = "{{nuevoNegocioCtrl.formNuevoNegocio.mapa.zoom}}">
+									<marker position = "{{nuevoNegocioCtrl.formNuevoNegocio.mapa.centroMapa}}"
+									        title = "Nuevo Negocio"
+									        centered = "true"
+									        draggable = "true">
+									</marker>
+								</ng-map>
+							</div>
+						</div>
+						<div class = "clearfix"></div>
+					</div>
+					<div class = "form-actions">
+						<button type = "submit"
+						        ng-disabled = "!nuevoNegocioCtrl.formNuevoNegocio.form.$valid"
+						        class = "btn btn-sm red">
+							Guardar
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+	<div class = "col-md-6">
+		<pre>{{nuevoNegocioCtrl.negocio | json}}</pre>
+	</div>
+</div>
